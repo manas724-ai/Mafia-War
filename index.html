@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mafia War — Nexus Online Games</title>
+<meta name="description" content="Mafia War — A cinematic adult multiplayer game featuring heists, gun combat, gang warfare and underground empire building. License or acquire this premium game title."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:   #0a0a0a;
+    --deep:    #111111;
+    --red:     #8b0000;
+    --red-hot: #c0392b;
+    --gold:    #c9a84c;
+    --gold-dim:#7a5f1e;
+    --smoke:   #e8e4dc;
+    --muted:   #9a9590;
+    --mono:    'Share Tech Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--smoke);
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 48px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.95), transparent);
+    backdrop-filter: blur(2px);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: 3px;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 2px;
+    color: var(--muted); text-decoration: none; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative; min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; overflow: hidden;
+    background: var(--black);
+    padding: 120px 24px 80px;
+  }
+
+  /* City skyline SVG background */
+  .skyline {
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 55%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 400' preserveAspectRatio='none'%3E%3Crect width='1440' height='400' fill='%230a0a0a'/%3E%3Cg fill='%23111111' stroke='%231a1a1a' stroke-width='0.5'%3E%3Crect x='0' y='200' width='60' height='200'/%3E%3Crect x='20' y='160' width='20' height='40'/%3E%3Crect x='70' y='120' width='80' height='280'/%3E%3Crect x='90' y='90' width='15' height='30'/%3E%3Crect x='160' y='180' width='50' height='220'/%3E%3Crect x='220' y='100' width='100' height='300'/%3E%3Crect x='240' y='70' width='20' height='30'/%3E%3Crect x='330' y='150' width='70' height='250'/%3E%3Crect x='410' y='80' width='90' height='320'/%3E%3Crect x='420' y='50' width='25' height='30'/%3E%3Crect x='510' y='200' width='60' height='200'/%3E%3Crect x='580' y='130' width='110' height='270'/%3E%3Crect x='600' y='100' width='20' height='30'/%3E%3Crect x='700' y='160' width='80' height='240'/%3E%3Crect x='790' y='90' width='120' height='310'/%3E%3Crect x='810' y='60' width='30' height='30'/%3E%3Crect x='920' y='140' width='70' height='260'/%3E%3Crect x='1000' y='110' width='90' height='290'/%3E%3Crect x='1010' y='80' width='20' height='30'/%3E%3Crect x='1100' y='170' width='60' height='230'/%3E%3Crect x='1170' y='120' width='100' height='280'/%3E%3Crect x='1185' y='90' width='25' height='30'/%3E%3Crect x='1280' y='150' width='80' height='250'/%3E%3Crect x='1370' y='200' width='70' height='200'/%3E%3C/g%3E%3Cg fill='%23c9a84c' opacity='0.4'%3E%3Ccircle cx='95' cy='88' r='2'/%3E%3Ccircle cx='245' cy='68' r='2'/%3E%3Ccircle cx='425' cy='48' r='2'/%3E%3Ccircle cx='605' cy='98' r='2'/%3E%3Ccircle cx='815' cy='58' r='2'/%3E%3Ccircle cx='1015' cy='78' r='2'/%3E%3Ccircle cx='1190' cy='88' r='2'/%3E%3C/g%3E%3C/svg%3E") no-repeat bottom center / cover;
+    opacity: 0.7;
+    transform: translateY(var(--parallax, 0px));
+    transition: transform 0.1s linear;
+    pointer-events: none;
+  }
+
+  /* Red atmospheric glow */
+  .hero-glow {
+    position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, rgba(139,0,0,0.35) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Bullet holes */
+  .bullet-holes {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; overflow: hidden;
+  }
+  .bullet {
+    position: absolute;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #000 30%, #1a0000 60%, transparent 100%);
+    box-shadow: 0 0 0 2px #333, 0 0 12px rgba(139,0,0,0.6);
+    opacity: 0;
+    animation: bulletAppear 0.15s forwards;
+  }
+  .bullet::after {
+    content: '';
+    position: absolute; top: 50%; left: 50%;
+    width: 60px; height: 60px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(139,0,0,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  @keyframes bulletAppear {
+    0% { transform: scale(0); opacity: 1; }
+    60% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.85; }
+  }
+
+  /* Hero content */
+  .hero-eyebrow {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 6px;
+    color: var(--gold); text-transform: uppercase;
+    opacity: 0; animation: fadeUp 0.6s 0.2s forwards;
+    position: relative; z-index: 2;
+    margin-bottom: 20px;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 16vw, 200px);
+    line-height: 0.9;
+    letter-spacing: 4px;
+    color: var(--smoke);
+    position: relative; z-index: 2;
+    opacity: 0; animation: titleSlam 0.5s 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
+    text-shadow: 0 0 80px rgba(139,0,0,0.5);
+  }
+  .hero-title span { color: var(--red-hot); }
+  .hero-sub {
+    font-family: 'Crimson Text', serif; font-style: italic;
+    font-size: clamp(18px, 3vw, 26px);
+    color: var(--muted); max-width: 560px;
+    position: relative; z-index: 2;
+    opacity: 0; animation: fadeUp 0.6s 0.9s forwards;
+    margin-top: 24px;
+  }
+  .hero-badge {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 3px;
+    color: var(--red-hot); border: 1px solid var(--red);
+    padding: 6px 18px; border-radius: 2px;
+    margin-top: 32px; display: inline-block;
+    position: relative; z-index: 2;
+    opacity: 0; animation: fadeUp 0.5s 1.1s forwards;
+    text-transform: uppercase;
+  }
+
+  .hero-ctas {
+    display: flex; gap: 16px; margin-top: 40px; flex-wrap: wrap; justify-content: center;
+    position: relative; z-index: 2;
+    opacity: 0; animation: fadeUp 0.6s 1.3s forwards;
+  }
+  .btn-primary {
+    font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px;
+    background: var(--red); color: var(--smoke);
+    padding: 14px 40px; border: none; cursor: pointer;
+    text-decoration: none; display: inline-block;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--red-hot); transform: translateY(-2px); }
+  .btn-secondary {
+    font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px;
+    background: transparent; color: var(--gold);
+    padding: 13px 40px; border: 1px solid var(--gold-dim); cursor: pointer;
+    text-decoration: none; display: inline-block;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: border-color 0.2s, color 0.2s, transform 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--smoke); transform: translateY(-2px); }
+
+  .scroll-hint {
+    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 3px; color: var(--muted);
+    text-transform: uppercase; z-index: 2;
+    opacity: 0; animation: fadeUp 0.5s 1.8s forwards;
+  }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 1.5s infinite;
+  }
+  @keyframes scrollPulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes titleSlam {
+    from { opacity: 0; transform: scale(1.15) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  /* ── SECTION WRAPPER ── */
+  section { padding: 100px 48px; max-width: 1200px; margin: 0 auto; }
+  .section-full { max-width: 100%; padding-left: 0; padding-right: 0; }
+
+  .section-label {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 5px;
+    color: var(--gold); text-transform: uppercase;
+    margin-bottom: 16px; display: block;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 7vw, 80px);
+    line-height: 1; color: var(--smoke); margin-bottom: 20px;
+  }
+  .section-body {
+    font-size: 20px; color: var(--muted); max-width: 640px; line-height: 1.7;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 100%; height: 1px;
+    background: linear-gradient(to right, transparent, var(--red) 30%, var(--gold) 50%, var(--red) 70%, transparent);
+    opacity: 0.4;
+  }
+
+  /* ── STATS BAR ── */
+  #stats {
+    background: var(--deep); border-top: 1px solid #1f1f1f; border-bottom: 1px solid #1f1f1f;
+    padding: 48px 48px;
+  }
+  .stats-grid {
+    display: flex; justify-content: center; gap: 0; flex-wrap: wrap;
+    max-width: 1000px; margin: 0 auto;
+  }
+  .stat-item {
+    flex: 1; min-width: 160px; text-align: center;
+    padding: 24px 32px;
+    border-right: 1px solid #2a2a2a;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif; font-size: 56px;
+    color: var(--gold); line-height: 1; display: block;
+  }
+  .stat-label {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 3px;
+    color: var(--muted); text-transform: uppercase; margin-top: 6px; display: block;
+  }
+
+  /* ── FEATURES ── */
+  #features { padding-top: 100px; padding-bottom: 60px; }
+  .features-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2px; margin-top: 60px;
+  }
+  .feature-card {
+    background: var(--deep); padding: 40px 36px;
+    border-top: 2px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .feature-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; background: linear-gradient(to right, var(--red), var(--gold));
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .feature-card:hover::before { transform: scaleX(1); }
+  .feature-card:hover { background: #161616; }
+  .feature-icon {
+    font-size: 36px; margin-bottom: 20px; display: block; line-height: 1;
+  }
+  .feature-title {
+    font-family: 'Bebas Neue', sans-serif; font-size: 28px;
+    letter-spacing: 2px; color: var(--smoke); margin-bottom: 12px;
+  }
+  .feature-desc { font-size: 17px; color: var(--muted); line-height: 1.65; }
+
+  /* ── GAMEPLAY SHOWCASE ── */
+  #gameplay {
+    background: var(--deep); padding: 100px 48px;
+    border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a;
+  }
+  .gameplay-inner { max-width: 1200px; margin: 0 auto; }
+  .gameplay-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 64px; align-items: center; margin-top: 60px;
+  }
+  .gameplay-visual {
+    aspect-ratio: 16/9; background: #0f0f0f;
+    border: 1px solid #222; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gameplay-visual canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+  .gameplay-visual-label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 3px;
+    color: var(--muted); text-transform: uppercase;
+    position: relative; z-index: 2;
+  }
+  .gameplay-features { list-style: none; display: flex; flex-direction: column; gap: 24px; }
+  .gameplay-features li {
+    display: flex; gap: 20px; align-items: flex-start;
+  }
+  .gf-num {
+    font-family: 'Bebas Neue', sans-serif; font-size: 40px;
+    color: var(--red); line-height: 1; min-width: 48px;
+    opacity: 0.7;
+  }
+  .gf-text h4 {
+    font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+    letter-spacing: 2px; color: var(--smoke); margin-bottom: 4px;
+  }
+  .gf-text p { font-size: 16px; color: var(--muted); }
+
+  /* ── PRICING ── */
+  #pricing { padding-top: 100px; }
+  .pricing-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2px; margin-top: 60px;
+  }
+  .pricing-card {
+    background: var(--deep); padding: 52px 48px;
+    position: relative; overflow: hidden;
+  }
+  .pricing-card.featured {
+    background: linear-gradient(135deg, #1a0505 0%, #0f0a00 100%);
+    border: 1px solid var(--gold-dim);
+  }
+  .pricing-card.featured::after {
+    content: 'RECOMMENDED';
+    position: absolute; top: 24px; right: -32px;
+    font-family: var(--mono); font-size: 9px; letter-spacing: 2px;
+    background: var(--gold); color: #000; padding: 5px 48px;
+    transform: rotate(45deg); transform-origin: center;
+  }
+  .pricing-tier {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 4px;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 12px; display: block;
+  }
+  .pricing-name {
+    font-family: 'Bebas Neue', sans-serif; font-size: 42px;
+    color: var(--smoke); margin-bottom: 8px;
+  }
+  .pricing-price {
+    font-family: 'Bebas Neue', sans-serif; font-size: 72px;
+    line-height: 1; color: var(--smoke); margin: 24px 0 8px;
+  }
+  .pricing-price sup { font-size: 28px; vertical-align: top; margin-top: 14px; display: inline-block; color: var(--muted); }
+  .pricing-price span { font-size: 20px; color: var(--muted); }
+  .pricing-desc { font-size: 16px; color: var(--muted); margin-bottom: 32px; font-style: italic; }
+  .pricing-features { list-style: none; margin-bottom: 40px; display: flex; flex-direction: column; gap: 14px; }
+  .pricing-features li {
+    font-size: 17px; color: var(--smoke); padding-left: 24px; position: relative;
+  }
+  .pricing-features li::before {
+    content: '—'; position: absolute; left: 0; color: var(--gold); font-family: var(--mono);
+  }
+  .pricing-note {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    letter-spacing: 1px; margin-top: 16px;
+  }
+
+  /* ── LEGAL ── */
+  #legal {
+    background: #0d0d0d; border-top: 1px solid #1a1a1a;
+    padding: 80px 48px;
+  }
+  .legal-inner { max-width: 1200px; margin: 0 auto; }
+  .legal-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; margin-top: 48px;
+  }
+  .legal-card {
+    background: var(--deep); padding: 36px 32px;
+    border-left: 3px solid var(--red);
+  }
+  .legal-card h4 {
+    font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+    letter-spacing: 2px; color: var(--smoke); margin-bottom: 12px;
+  }
+  .legal-card p { font-size: 15px; color: var(--muted); line-height: 1.6; }
+
+  /* ── AGE GATE DISCLAIMER ── */
+  #age-disclaimer {
+    background: linear-gradient(135deg, #1a0000, #0a0000);
+    border: 1px solid var(--red); margin: 0 48px;
+    padding: 32px 40px; display: flex; align-items: center; gap: 24px;
+    max-width: 1200px; margin: 0 auto 60px; 
+  }
+  .age-icon { font-size: 48px; flex-shrink: 0; }
+  .age-text h4 {
+    font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px;
+    color: var(--red-hot); margin-bottom: 6px;
+  }
+  .age-text p { font-size: 15px; color: var(--muted); }
+
+  /* ── CONTACT ── */
+  #contact {
+    padding: 100px 48px; text-align: center;
+    background: var(--black);
+  }
+  .contact-inner { max-width: 680px; margin: 0 auto; }
+  .contact-email {
+    font-family: 'Bebas Neue', sans-serif; font-size: clamp(24px, 4vw, 40px);
+    color: var(--gold); letter-spacing: 2px; margin: 32px 0;
+    display: block; text-decoration: none;
+    transition: color 0.2s;
+  }
+  .contact-email:hover { color: var(--smoke); }
+  .contact-sub { font-size: 18px; color: var(--muted); margin-bottom: 40px; font-style: italic; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #050505; border-top: 1px solid #1a1a1a;
+    padding: 40px 48px; text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 4px;
+    color: var(--gold-dim); margin-bottom: 16px; display: block;
+  }
+  .footer-copy {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 2px;
+    color: #444; line-height: 1.8;
+  }
+  .footer-copy a { color: #555; text-decoration: none; }
+  .footer-copy a:hover { color: var(--muted); }
+
+  /* ── ANIMATED PREVIEW CANVAS ── */
+  #previewCanvas { display: block; width: 100%; height: 100%; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    section { padding: 72px 24px; }
+    #stats { padding: 40px 24px; }
+    .stats-grid { gap: 0; }
+    .stat-item { border-right: none; border-bottom: 1px solid #2a2a2a; }
+    .stat-item:last-child { border-bottom: none; }
+    .gameplay-grid { grid-template-columns: 1fr; gap: 40px; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .legal-grid { grid-template-columns: 1fr; }
+    #age-disclaimer { flex-direction: column; text-align: center; margin: 0 24px 48px; }
+    .pricing-card.featured::after { display: none; }
+    #gameplay { padding: 72px 24px; }
+    #legal { padding: 72px 24px; }
+    #contact { padding: 72px 24px; }
+    footer { padding: 32px 24px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .hero-eyebrow, .hero-title, .hero-sub, .hero-badge, .hero-ctas, .scroll-hint { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">NEXUS ONLINE GAMES</a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#gameplay">Gameplay</a></li>
+    <li><a href="#pricing">Licensing</a></li>
+    <li><a href="#contact">Acquire</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero" class="section-full">
+  <div class="skyline" id="skyline"></div>
+  <div class="hero-glow"></div>
+  <div class="bullet-holes" id="bulletHoles"></div>
+
+  <span class="hero-eyebrow">Nexus Online Games Presents</span>
+  <h1 class="hero-title">MAFIA<br/><span>WAR</span></h1>
+  <p class="hero-sub">A cinematic multiplayer crime empire — built for the underground, sold to the bold.</p>
+  <span class="hero-badge">⚠ Strictly Adults 18+ · Mature Content</span>
+
+  <div class="hero-ctas">
+    <a href="#pricing" class="btn-primary">Acquire the Game</a>
+    <a href="#features" class="btn-secondary">View Features</a>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- STATS -->
+<div id="stats">
+  <div class="stats-grid">
+    <div class="stat-item">
+      <span class="stat-num">6</span>
+      <span class="stat-label">Game Levels</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">12</span>
+      <span class="stat-label">Unique Locations</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">100+</span>
+      <span class="stat-label">Players per Match</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">8</span>
+      <span class="stat-label">Weapon Classes</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">4</span>
+      <span class="stat-label">Gang Factions</span>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features">
+  <span class="section-label">Core Features</span>
+  <h2 class="section-title">Built for the Underworld</h2>
+  <p class="section-body">Every mechanic, every mission, every bullet designed to deliver a cinematic crime empire experience with no compromises.</p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">🔫</span>
+      <h3 class="feature-title">Gun War Combat</h3>
+      <p class="feature-desc">Real-time ballistic combat with 8 weapon classes — pistols, SMGs, shotguns, sniper rifles, explosives, and more. Precision hit detection with cinematic kill cams.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🏦</span>
+      <h3 class="feature-title">Bank Heist Missions</h3>
+      <p class="feature-desc">Orchestrate vault breaches, crowd control, and getaway sequences across five fully designed bank environments. Timed explosives, guard AI, and loot splits.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">👥</span>
+      <h3 class="feature-title">Real-Time Multiplayer</h3>
+      <p class="feature-desc">Up to 100 players per session across WebSocket-powered rooms. Gang vs gang, free-for-all, and co-op heist modes with live leaderboards.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🗺️</span>
+      <h3 class="feature-title">12 Distinct Locations</h3>
+      <p class="feature-desc">From blood-soaked back alleys and Chinatown warehouses to casino floors and penthouse suites — each map built with unique tactical geometry.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">💀</span>
+      <h3 class="feature-title">Gang Faction System</h3>
+      <p class="feature-desc">Choose from 4 rival factions — each with unique perks, weapons, and storylines. Territory control shifts dynamically based on match outcomes.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🏆</span>
+      <h3 class="feature-title">Progression & Ranks</h3>
+      <p class="feature-desc">Street Soldier to Godfather — 40 player ranks with unlockable weapons, faction perks, and cosmetic rewards across persistent accounts.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">💰</span>
+      <h3 class="feature-title">Stripe Payment System</h3>
+      <p class="feature-desc">Full subscription and one-time payment integration. Premium tiers, in-game currency, and season pass support built in and production-ready.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🛡️</span>
+      <h3 class="feature-title">Admin & Moderation</h3>
+      <p class="feature-desc">Full admin dashboard — ban players, manage reports, monitor live sessions, adjust game parameters, and control revenue from one panel.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📱</span>
+      <h3 class="feature-title">PWA — Mobile Ready</h3>
+      <p class="feature-desc">Progressive Web App architecture. Plays on desktop and mobile browsers without any app store dependency. Installable, offline-capable lobby.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider" style="max-width:1200px;margin:0 auto;"></div>
+
+<!-- GAMEPLAY -->
+<div id="gameplay">
+  <div class="gameplay-inner">
+    <span class="section-label">How It Plays</span>
+    <h2 class="section-title">Every Match, a War Story</h2>
+
+    <div class="gameplay-grid">
+      <div class="gameplay-visual">
+        <canvas id="previewCanvas"></canvas>
+      </div>
+      <ul class="gameplay-features">
+        <li>
+          <span class="gf-num">01</span>
+          <div class="gf-text">
+            <h4>Choose Your Faction</h4>
+            <p>Pick your gang, load your loadout, and enter the city. Loyalty determines your allies — and your enemies.</p>
+          </div>
+        </li>
+        <li>
+          <span class="gf-num">02</span>
+          <div class="gf-text">
+            <h4>Seize the Territory</h4>
+            <p>Control zones grant income and resources. Hold them long enough and your faction rules the city.</p>
+          </div>
+        </li>
+        <li>
+          <span class="gf-num">03</span>
+          <div class="gf-text">
+            <h4>Execute the Heist</h4>
+            <p>The bank mission requires team coordination — breach, secure, extract. Split the loot or take it all.</p>
+          </div>
+        </li>
+        <li>
+          <span class="gf-num">04</span>
+          <div class="gf-text">
+            <h4>Rise to Godfather</h4>
+            <p>XP, kills, and successful heists push your rank. The streets remember who earns their title.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING / LICENSING -->
+<section id="pricing">
+  <span class="section-label">Licensing & Acquisition</span>
+  <h2 class="section-title">Own the Underworld</h2>
+  <p class="section-body">Mafia War is available for licensing or outright acquisition. Both options include full source code, documentation, and deployment support.</p>
+
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <span class="pricing-tier">License</span>
+      <div class="pricing-name">Commercial License</div>
+      <div class="pricing-price"><sup>$</sup>4,999<span>/yr</span></div>
+      <p class="pricing-desc">Deploy and operate Mafia War under your brand with annual licensing terms.</p>
+      <ul class="pricing-features">
+        <li>Full source code access</li>
+        <li>Deploy on your own infrastructure</li>
+        <li>Rebrand with your identity</li>
+        <li>12 months of technical support</li>
+        <li>Updates included for license term</li>
+        <li>Single deployment licence</li>
+      </ul>
+      <a href="#contact" class="btn-secondary" style="display:inline-block;width:100%;text-align:center;">Enquire Now</a>
+      <p class="pricing-note">* Pricing in AUD. Multi-deployment discounts available.</p>
+    </div>
+    <div class="pricing-card featured">
+      <span class="pricing-tier">Acquisition</span>
+      <div class="pricing-name">Full Ownership</div>
+      <div class="pricing-price"><sup>$</sup>24,999</div>
+      <p class="pricing-desc">Acquire complete and permanent ownership — source code, IP, and all rights transferred.</p>
+      <ul class="pricing-features">
+        <li>100% IP and source code transfer</li>
+        <li>Exclusive ownership — no resale</li>
+        <li>All future rights included</li>
+        <li>6 months deployment support</li>
+        <li>Full documentation handover</li>
+        <li>Revenue share negotiable</li>
+      </ul>
+      <a href="#contact" class="btn-primary" style="display:inline-block;width:100%;text-align:center;">Acquire Now</a>
+      <p class="pricing-note">* Escrow and instalment options available on request.</p>
+    </div>
+  </div>
+</section>
+
+<!-- AGE DISCLAIMER -->
+<div style="max-width:1200px;margin:0 auto 80px;padding:0 48px;">
+  <div id="age-disclaimer">
+    <div class="age-icon">🔞</div>
+    <div class="age-text">
+      <h4>Adults Only — 18+ Strictly Enforced</h4>
+      <p>Mafia War contains graphic violence, adult themes, simulated criminal activity, and mature language. This game is designed exclusively for adults aged 18 and over. Any licensing or deployment of this product must include age verification mechanisms. The product owner accepts no liability for deployment to minors.</p>
+    </div>
+  </div>
+</div>
+
+<!-- LEGAL -->
+<div id="legal">
+  <div class="legal-inner">
+    <span class="section-label">Legal Protection</span>
+    <h2 class="section-title">IP & Copyright</h2>
+
+    <div class="legal-grid">
+      <div class="legal-card">
+        <h4>Copyright Notice</h4>
+        <p>© 2026 Aussi-Nexus Group (ABN 76 947 108 181). All rights reserved. Mafia War, its source code, game mechanics, artwork concepts, and brand identity are the exclusive intellectual property of Aussi-Nexus Group. Unauthorised reproduction, distribution, or deployment is prohibited under Australian and international copyright law.</p>
+      </div>
+      <div class="legal-card">
+        <h4>Licensing Terms</h4>
+        <p>Any licence granted is non-transferable and non-sublicensable unless explicitly agreed in writing. The licensee may not resell, redistribute, or sublicense the software. Breach of licence terms results in immediate termination and potential legal action. All disputes are subject to Queensland, Australia jurisdiction.</p>
+      </div>
+      <div class="legal-card">
+        <h4>Content Disclaimer</h4>
+        <p>Mafia War is a work of fiction. All characters, gangs, locations, and scenarios are entirely fictional. The game does not endorse, promote, or glorify criminal activity, violence, or illegal conduct. The publisher assumes no responsibility for the actions of players or operators. Deployers must comply with local laws and regulations.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <span class="section-label">Get in Touch</span>
+    <h2 class="section-title">Ready to Acquire?</h2>
+    <p class="contact-sub">For licensing enquiries, acquisition discussions, or to request a full technical demo, reach out directly.</p>
+    <a href="mailto:info@nexusonlinegames.com" class="contact-email">info@nexusonlinegames.com</a>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a href="#pricing" class="btn-primary">View Licensing Options</a>
+      <a href="mailto:info@nexusonlinegames.com" class="btn-secondary">Send Enquiry</a>
+    </div>
+    <p style="margin-top:32px;font-family:var(--mono);font-size:11px;letter-spacing:2px;color:#444;">
+      AUSSI-NEXUS GROUP · SHAILER PARK, QUEENSLAND, AUSTRALIA · ABN 76 947 108 181
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">NEXUS ONLINE GAMES</span>
+  <p class="footer-copy">
+    © 2026 Aussi-Nexus Group (ABN 76 947 108 181). All rights reserved.<br/>
+    Mafia War is a registered product of Aussi-Nexus Group. All intellectual property rights reserved.<br/>
+    <a href="mailto:info@nexusonlinegames.com">info@nexusonlinegames.com</a> · nexusonlinegames.com<br/><br/>
+    This product is strictly for adults aged 18 and over. Contains mature themes, simulated violence, and adult content.<br/>
+    The game is fictional. No real criminal activity is promoted, endorsed, or encouraged.
+  </p>
+</footer>
+
+<script>
+// ── BULLET HOLES on load ──
+(function(){
+  const container = document.getElementById('bulletHoles');
+  const positions = [
+    {top:'18%',left:'12%'},{top:'25%',left:'82%'},{top:'55%',left:'6%'},
+    {top:'40%',left:'91%'},{top:'72%',left:'25%'},{top:'15%',left:'55%'},
+    {top:'65%',left:'70%'},{top:'80%',left:'48%'}
+  ];
+  positions.forEach((pos, i) => {
+    setTimeout(() => {
+      const b = document.createElement('div');
+      b.className = 'bullet';
+      b.style.top = pos.top;
+      b.style.left = pos.left;
+      b.style.animationDelay = '0s';
+      container.appendChild(b);
+    }, 600 + i * 120);
+  });
+})();
+
+// ── PARALLAX skyline ──
+(function(){
+  const skyline = document.getElementById('skyline');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    skyline.style.setProperty('--parallax', `${y * 0.15}px`);
+  }, { passive: true });
+})();
+
+// ── ANIMATED GAME PREVIEW CANVAS ──
+(function(){
+  const canvas = document.getElementById('previewCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    const parent = canvas.parentElement;
+    canvas.width = parent.offsetWidth;
+    canvas.height = parent.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Simple animated city scene
+  const buildings = [];
+  for (let i = 0; i < 18; i++) {
+    buildings.push({
+      x: (i / 18) * 1.1,
+      w: 0.04 + Math.random() * 0.03,
+      h: 0.2 + Math.random() * 0.35,
+      windows: []
+    });
+  }
+
+  const players = [
+    { x: 0.25, y: 0.65, vx: 0.0008, color: '#8b0000', label: 'GHOST' },
+    { x: 0.7,  y: 0.68, vx: -0.0006, color: '#c9a84c', label: 'VIPER' },
+    { x: 0.5,  y: 0.72, vx: 0.0004, color: '#444', label: 'BLADE' }
+  ];
+
+  let bullets = [];
+  let lastShot = 0;
+  let frame = 0;
+
+  function shoot(from, to) {
+    bullets.push({ x: from.x, y: from.y, tx: to.x, ty: to.y, life: 1 });
+  }
+
+  function draw(ts) {
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+
+    // Sky gradient
+    const sky = ctx.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0, '#050008');
+    sky.addColorStop(0.6, '#0a0010');
+    sky.addColorStop(1, '#1a0000');
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, W, H);
+
+    // Moon
+    ctx.beginPath();
+    ctx.arc(W * 0.82, H * 0.12, 18, 0, Math.PI * 2);
+    ctx.fillStyle = '#c9a84c';
+    ctx.globalAlpha = 0.5;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Buildings
+    buildings.forEach(b => {
+      const bx = b.x * W, bw = b.w * W, bh = b.h * H;
+      const by = H * 0.55 - bh;
+      ctx.fillStyle = '#111';
+      ctx.fillRect(bx, by, bw, H);
+      // Windows
+      const cols = Math.floor(bw / 10);
+      const rows = Math.floor(bh / 14);
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          if (Math.sin(b.x * 100 + r * 7 + c * 13 + frame * 0.002) > 0.3) {
+            ctx.fillStyle = Math.random() > 0.98 ? '#8b0000' : '#c9a84c';
+            ctx.globalAlpha = 0.4 + Math.sin(frame * 0.05 + r + c) * 0.1;
+            ctx.fillRect(bx + c * 10 + 2, by + r * 14 + 2, 6, 8);
+            ctx.globalAlpha = 1;
+          }
+        }
+      }
+    });
+
+    // Ground
+    const ground = ctx.createLinearGradient(0, H * 0.55, 0, H);
+    ground.addColorStop(0, '#1a0000');
+    ground.addColorStop(1, '#0a0000');
+    ctx.fillStyle = ground;
+    ctx.fillRect(0, H * 0.55, W, H * 0.45);
+
+    // Players
+    players.forEach(p => {
+      p.x += p.vx;
+      if (p.x > 0.9 || p.x < 0.1) p.vx *= -1;
+      const px = p.x * W, py = p.y * H;
+
+      // Shadow
+      ctx.beginPath();
+      ctx.ellipse(px, py + 14, 12, 4, 0, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0,0,0,0.5)';
+      ctx.fill();
+
+      // Body
+      ctx.fillStyle = p.color;
+      ctx.fillRect(px - 6, py - 18, 12, 20);
+      // Head
+      ctx.beginPath();
+      ctx.arc(px, py - 22, 7, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+
+      // Label
+      ctx.font = `bold 9px 'Share Tech Mono', monospace`;
+      ctx.fillStyle = p.color;
+      ctx.textAlign = 'center';
+      ctx.fillText(p.label, px, py - 34);
+
+      // HP bar
+      ctx.fillStyle = '#222';
+      ctx.fillRect(px - 15, py - 30, 30, 3);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(px - 15, py - 30, 20, 3);
+    });
+
+    // Shoot periodically
+    if (ts - lastShot > 1800) {
+      const a = players[Math.floor(Math.random() * players.length)];
+      const b = players[Math.floor(Math.random() * players.length)];
+      if (a !== b) shoot(a, b);
+      lastShot = ts;
+    }
+
+    // Bullets
+    bullets = bullets.filter(b => b.life > 0);
+    bullets.forEach(b => {
+      b.life -= 0.06;
+      b.x += (b.tx - b.x) * 0.15;
+      b.y += (b.ty - b.y) * 0.15;
+      ctx.beginPath();
+      ctx.arc(b.x * W, b.y * H, 3, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 200, 50, ${b.life})`;
+      ctx.fill();
+      // Trail
+      ctx.beginPath();
+      ctx.moveTo(b.x * W, b.y * H);
+      ctx.lineTo((b.x - (b.tx - b.x) * 0.5) * W, (b.y - (b.ty - b.y) * 0.5) * H);
+      ctx.strokeStyle = `rgba(255,100,0,${b.life * 0.5})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    });
+
+    // HUD overlay
+    ctx.font = `10px 'Share Tech Mono', monospace`;
+    ctx.fillStyle = '#8b0000';
+    ctx.textAlign = 'left';
+    ctx.fillText('● LIVE  MATCH  IN  PROGRESS', 10, 18);
+    ctx.fillStyle = '#c9a84c';
+    ctx.textAlign = 'right';
+    ctx.fillText(`PLAYERS: ${players.length}/100`, W - 10, 18);
+
+    // Scanline effect
+    ctx.fillStyle = 'rgba(0,0,0,0.03)';
+    for (let y = 0; y < H; y += 4) {
+      ctx.fillRect(0, y, W, 1);
+    }
+
+    frame++;
+    requestAnimationFrame(draw);
+  }
+
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
